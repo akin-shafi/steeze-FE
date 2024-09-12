@@ -17,14 +17,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { AuthDialog } from "./AuthDialog";
 
 const Header = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  const [authDialogType, setAuthDialogType] = useState("login");
+
+  const openLoginDialog = () => {
+    setAuthDialogType("login");
+    setIsAuthDialogOpen(true);
+  };
 
   return (
     <>
       <div className="bg-primary text-white py-2 text-center">
-      Welcome to worldwide Steeze & Needle
+        Welcome to worldwide Steeze & Needle
       </div>
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
@@ -61,17 +69,14 @@ const Header = () => {
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="flex items-center"
-                  >
+                  <Button variant="ghost" className="flex items-center">
                     <span className="hidden md:inline">Account</span>
                     <User className="md:hidden" size={24} />
                     <ChevronDown size={16} className="hidden md:inline" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem>
+                <DropdownMenuItem onSelect={openLoginDialog}>
                     <Button className="w-full justify-start">Login</Button>
                   </DropdownMenuItem>
                   <DropdownMenuItem>As a Seller</DropdownMenuItem>
@@ -112,6 +117,11 @@ const Header = () => {
           )}
         </div>
       </header>
+      <AuthDialog
+        isOpen={isAuthDialogOpen}
+        onOpenChange={setIsAuthDialogOpen}
+        initialView={authDialogType}
+      />
     </>
   );
 };
